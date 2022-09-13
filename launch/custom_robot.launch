@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="use_urdf_meshes" default="false"/>
+
+	<param if="$(arg use_urdf_meshes)" name="robot_description" textfile="$(find dnb_kemrox_custom_robot)/urdf/robots/custom_robot.urdf"/>
+	<rosparam file="$(find dnb_kemrox_custom_robot)/module_config/config/kemrox_custom.yaml" ns="robot_config" command="load" />
+
+	<include file="$(find dnb_remote_robot_control)/launch/start_v3.launch">
+		<arg name="package" value="dnb_kemrox_custom_robot" />
+		<arg name="robot" value="kemrox_custom" />
+	</include>
+
+	<param name="simulation_params/kinematic_model" value=""/>
+
+	<!-- Static Transform Publishers -->
+	<node name="stfp_robot_base_to_base_link" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 robot_base base_link 100" />
+	<node name="stfp_robot_base_to_manufacturer_base" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 robot_base manufacturer_base 100" />
+</launch>

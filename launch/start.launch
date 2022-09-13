@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="ip" default="192.168.100.100"/>
+	<arg name="robot_name" default="RobotName"/>
+	<arg name="use_urdf_meshes" default="false"/>
+
+	<rosparam command="delete" param="robot_config" />
+	<rosparam command="delete" param="robot_description" />
+
+	<!-- Load Robot Individual Settings and Model -->
+	<include file="$(find dnb_kemrox_custom_robot)/launch/custom_robot.launch">
+		<arg name="use_urdf_meshes" value="$(arg use_urdf_meshes)"/>
+	</include>
+
+	<!-- Robot state publisher -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+	<!-- Robot Driver -->
+	<node pkg="dnb_ros_driver_kemrox" type="driver_kemrox_node" name="driver_kemrox" output="screen">
+		<param name="ip" value="$(arg ip)"/>
+		<param name="robot_name" value="$(arg robot_name)"/>
+	</node>
+
+	<include file="$(find robot_movement_interface)/launch/notify_robot_start.launch"/>
+</launch>

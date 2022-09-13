@@ -1,0 +1,30 @@
+package: dnb_kemrox_custom_robot
+name: "KemroX Custom Robot"
+description: "Driver for custom made robots with the KemroX controller"
+type: driver/robot/kemrox/custom
+roslaunch: start.launch
+configuration:
+  - id: ip
+    namespace: ''
+    name: 'IP'
+    description: 'The IP address of the robot'
+    datatype: string
+    default: 192.168.100.100
+  - id: robot_name
+    namespace: ''
+    name: 'Robot Name'
+    description: 'The name of the robot'
+    datatype: string
+    default: "RobotName"
+  - id: use_urdf_meshes
+    namespace: ''
+    name: 'Use URDF and meshes'
+    description: 'Use URDF files and meshes to display the robot in drag&bot.'
+    datatype: bool
+    default: 'false'
+
+
+nodes:
+  - node_callerid: /driver_kemrox
+    type: driver_kemrox_node
+status_topic: /kemrox_driver/status
