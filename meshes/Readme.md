@@ -1,0 +1,2 @@
+- Place meshes in this directory.
+- Name the meshes as follows: base_link, link_1, link_2, ..., link_6
