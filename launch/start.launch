@@ -13,7 +13,7 @@
 	</include>
 
 	<!-- Robot state publisher -->
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+	<node if="$(arg use_urdf_meshes)" name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
 	<!-- Robot Driver -->
 	<node pkg="dnb_ros_driver_kemrox" type="driver_kemrox_node" name="driver_kemrox" output="screen">
