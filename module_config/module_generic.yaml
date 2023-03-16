@@ -22,7 +22,13 @@ configuration:
     description: 'Use URDF files and meshes to display the robot in drag&bot.'
     datatype: bool
     default: 'false'
-
+  - id: kemrox_version
+    namespace: ''
+    name: 'KemroX Version'
+    description: 'KemroX Version of the target system. Select the newest available version if your version is newer but not listed.'
+    datatype: select
+    default: 'KemroX 4.5.0'
+    available: ['KemroX 4.4.0', 'KemroX 4.5.0']
 
 nodes:
   - node_callerid: /driver_kemrox
