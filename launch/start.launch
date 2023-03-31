@@ -3,6 +3,7 @@
 	<arg name="ip" default="192.168.100.100"/>
 	<arg name="robot_name" default="RobotName"/>
 	<arg name="use_urdf_meshes" default="false"/>
+	<arg name="kemrox_version" default="KemroX 4.5.0"/>
 
 	<rosparam command="delete" param="robot_config" />
 	<rosparam command="delete" param="robot_description" />
@@ -16,10 +17,24 @@
 	<node if="$(arg use_urdf_meshes)" name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
 	<!-- Robot Driver -->
-	<node pkg="dnb_ros_driver_kemrox" type="driver_kemrox_node" name="driver_kemrox" output="screen">
+	<node if="$(eval arg('kemrox_version') == 'KemroX 4.4.0')" pkg="dnb_ros_driver_kemrox" type="driver_kemrox_node_4_4_0" name="driver_kemrox" output="screen">
 		<param name="ip" value="$(arg ip)"/>
 		<param name="robot_name" value="$(arg robot_name)"/>
 	</node>
 
+	<node if="$(eval arg('kemrox_version') == 'KemroX 4.5.0')" pkg="dnb_ros_driver_kemrox" type="driver_kemrox_node_4_5_0" name="driver_kemrox" output="screen">
+		<param name="ip" value="$(arg ip)"/>
+		<param name="robot_name" value="$(arg robot_name)"/>
+		<param name="kemrox_version" value="$(arg kemrox_version)"/>
+	</node>
+
 	<include file="$(find robot_movement_interface)/launch/notify_robot_start.launch"/>
+
+	<node if="$(eval arg('kemrox_version') == 'KemroX 4.5.0')" pkg="dnb_ros_kemrox_variable_client" type="vars_rest_client.py" name="kemrox_driver_rest_client" output="screen">
+		<param name="device_ip" value="$(arg ip)"/>
+		<remap from="/variable_rest_client/get_variable" to="/kemrox_driver_rest_client/get_variable"/>
+		<remap from="/variable_rest_client/set_variable" to="/kemrox_driver_rest_client/set_variable"/>
+		<remap from="/variable_rest_client/list_variables" to="/kemrox_driver_rest_client/list_variables"/>
+		<remap from="/variable_rest_client/get_token" to="/kemrox_driver_rest_client/get_token"/>
+	</node>
 </launch>
